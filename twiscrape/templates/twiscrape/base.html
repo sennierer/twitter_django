@@ -1,0 +1,87 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>{% block Titel %} Twitterscraping app {% endblock %}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% block metaDescription %}
+      <meta name="description" content="A Web-App">
+      <meta name="author" content="Matthias Schlögl">
+      {% endblock %}
+
+      <!-- Bootstrap-->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <!-- End Piwik Code -->
+      {% block scriptHeader %}
+      {% endblock %}
+  </head>
+  <body>
+
+    <!-- End Piwik Code -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation!</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="nav-item" ><a href="">Home</a></li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Twitter
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                        <a href="">projects</a>
+                    </li>
+
+                  </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                        <a href="">Log-In</a>
+                    </li>
+                    <li>
+                        <a href="">Log-Out</a>
+                    </li>
+                    <li>
+                      <div class="form-check" style="padding-left: 20px">
+                        <input type="checkbox" class="form-check-input" id="ckeck_edit_views" {% if  request.session.edit_views %}checked{% endif %}>
+                        <label class="form-check-label" for="ckeck_edit_views">Use edit views</label>
+                      </div>
+                    </li>
+                    <li>
+                        <a href="">Registration</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="content" class="container">
+    <div class="alert alert-warning">
+    <strong>Warning!</strong> Work in Progress. But entered data will be preserved.
+    </div>
+      {% block content %}
+      {% endblock %}
+    </div>
+
+
+    {% block scripts %}
+    {% endblock scripts%}
+  </body>
+</html>

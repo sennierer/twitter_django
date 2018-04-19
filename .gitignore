@@ -1,0 +1,6 @@
+*.pyc
+*.sqlite3
+__pycache__
+migrations
+.ipynb_checkpoints
+*.ipynb
