@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
 from .filter import MessageFilter
 from .forms import GenericFilterFormHelper
 from .tables import MessagesTable
 from django_tables2 import SingleTableView
-from .models import Message
+from django_tables2 import RequestConfig
+from .models import Message, Account
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -27,4 +29,17 @@ class TweetsList(SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(TweetsList, self).get_context_data()
         context[self.context_filter_name] = self.filter
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class AccountDetail(DetailView):
+    template_name = 'twiscrape/account_detail.html'
+    model = Account
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountDetail, self).get_context_data()
+        table = MessagesTable(Message.objects.filter(by_id=self.kwargs.get('pk')))
+        RequestConfig(self.request).configure(table)
+        context['messages_table'] = table
         return context

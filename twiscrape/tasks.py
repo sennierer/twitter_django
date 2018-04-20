@@ -54,7 +54,7 @@ def read_twitter(project_id):
         auth.set_access_token(
             project.access_token, project.access_token_secret)
         logger.info('starting stream')
-        stream = Stream(auth, l)
+        stream = Stream(auth, l, tweet_mode= 'extended')
         #stream.filter(follow=["20428671"])
         stream.userstream(encoding='utf8')
     except SoftTimeLimitExceeded:

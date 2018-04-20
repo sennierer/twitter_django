@@ -1,5 +1,7 @@
 from django.db import models
 from .tasks import read_twitter
+import tweepy
+import time
 
 
 def save_new_tweets(project_id, tweets):
@@ -24,6 +26,7 @@ class Account(models.Model):
 
 class Message(models.Model):
     id = models.BigIntegerField(primary_key=True)
+    created_at = models.DateTimeField(blank=True, null=True)
     by = models.ForeignKey(
         Account, on_delete=models.DO_NOTHING, blank=True, null=True,
         related_name='authored_by')
@@ -63,10 +66,20 @@ class Project(models.Model):
         return m
 
     def add_new_tweets(self, tweet, drilldown=True):
+        if 'extended_tweet' in tweet.keys():
+            tweet['text'] = tweet['extended_tweet']['full_text']
+        ts = time.strftime(
+            '%Y-%m-%d %H:%M:%S',
+            time.strptime(tweet['created_at'], '%a %b %d %H:%M:%S +0000 %Y'))
+        usr, created = Account.objects.get_or_create(
+            id=tweet['user']['id'], handle=tweet['user']['screen_name']
+        )
         m = Message.objects.create(
             id=tweet['id'],
+            created_at=ts,
             text=tweet['text'],
-            project=self
+            project=self,
+            by=usr
         )
         mentions = []
         for usr in tweet['entities']['user_mentions']:
