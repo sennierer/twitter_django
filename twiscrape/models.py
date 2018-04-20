@@ -8,6 +8,14 @@ def save_new_tweets(project_id, tweets):
     project = Project.objects.get(pk=project_id)
 
 
+class Url(models.Model):
+    url = models.URLField()
+    shortened_url = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.url
+
+
 class Hashtag(models.Model):
     text = models.TextField()
 
@@ -32,6 +40,7 @@ class Message(models.Model):
         related_name='authored_by')
     mentions = models.ManyToManyField(Account, blank=True)
     hashtags = models.ManyToManyField(Hashtag, blank=True)
+    urls = models.ManyToManyField(Url, blank=True)
     text = models.TextField(blank=True, null=True)
     geo = models.CharField(max_length=50, blank=True, null=True)
     project = models.ForeignKey('Project', on_delete=models.DO_NOTHING)
@@ -42,6 +51,9 @@ class Message(models.Model):
     in_reply_to = models.ForeignKey(
         'self', on_delete=models.DO_NOTHING, blank=True, null=True,
         related_name='replied_tweet')
+    reply_count = models.IntegerField(default=0)
+    retweet_count = models.IntegerField(default=0)
+    favorite_count = models.IntegerField(default=0)
 
 
 class Project(models.Model):

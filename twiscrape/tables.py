@@ -15,3 +15,9 @@ class MessagesTable(tables.Table):
         fields = ['text']
         # add class="paleblue" to <table> tag
         attrs = {"class": "table table-hover table-striped table-condensed"}
+
+
+    def __init__(self, *args, exclude_columns=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if exclude_columns is not None:
+            self.exclude = exclude_columns

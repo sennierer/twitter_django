@@ -39,7 +39,7 @@ class AccountDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(AccountDetail, self).get_context_data()
-        table = MessagesTable(Message.objects.filter(by_id=self.kwargs.get('pk')))
+        table = MessagesTable(Message.objects.filter(by_id=self.kwargs.get('pk')), exclude_columns=('by',))
         RequestConfig(self.request).configure(table)
         context['messages_table'] = table
         return context
