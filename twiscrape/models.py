@@ -2,6 +2,9 @@ from django.db import models
 from .tasks import read_twitter
 import tweepy
 import time
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 
 def save_new_tweets(project_id, tweets):
@@ -127,3 +130,8 @@ class Project(models.Model):
         r = read_twitter.delay(self.pk)
         self.celery_task_id = r.id
         self.save()
+
+
+@receiver(post_save, sender=Project)
+def start_scraping(sender, instance, **kwargs):
+    instance.start()
