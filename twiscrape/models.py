@@ -134,4 +134,5 @@ class Project(models.Model):
 
 @receiver(post_save, sender=Project)
 def start_scraping(sender, instance, **kwargs):
-    instance.start()
+    if kwargs['created']:
+        instance.start()

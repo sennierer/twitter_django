@@ -42,7 +42,7 @@ class TweetDjListener(StreamListener):
         super().__init__(*args, **kwargs)
 
 
-@shared_task(soft_time_limit=90, time_limit=200)
+@shared_task(soft_time_limit=1200, time_limit=1800)
 def read_twitter(project_id):
     try:
         project = ContentType.objects.get(
