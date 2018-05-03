@@ -3,10 +3,14 @@ from django_tables2.utils import A
 from .models import Message
 
 
+def transform_hashtags(hashtag):
+    return '<a href ="test.at">{}</a>'.format(hashtag.text)
+
+
 class MessagesTable(tables.Table):
     by = tables.LinkColumn('twiscrape:account-detail', args=[A('by_id')])
     #project = tables.LinkColumn('twiscrape:project-detail', args=[A('pk')])
-    hashtags = tables.ManyToManyColumn()
+    hashtags = tables.ManyToManyColumn(transform_hashtags)
     mentions = tables.ManyToManyColumn()
 
 
